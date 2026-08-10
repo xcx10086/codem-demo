@@ -144,9 +144,8 @@ export default function Home() {
   };
 
   const selectWorkflow = (index: number) => {
-    // BUG-08: 保存状态时错误地减 1
-    setActiveWorkflow(Math.max(index - 1, 0));
-  };
+    setActiveWorkflow(index);
+    };
 
   const showNextStory = () => {
     setStoryIndex((index) => (index + 1) % stories.length);
