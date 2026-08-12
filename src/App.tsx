@@ -136,16 +136,25 @@ export default function Home() {
   };
 
   const pauseDemo = () => {
-    // BUG-05: 暂停错误地执行了完整重置,进度与日志全部清零
-    setDemoRunning(false);
-    setDemoPaused(false);
-    setProgress(0);
-    setDemoComplete(false);
+    // BUG-05: 暂停只应停止定时器并保留进度,不应清零任何状态
+    if (demoRunning) {
+      // 暂停:停止定时器,保留进度
+      setDemoRunning(false);
+      setDemoPaused(true);
+    } else if (demoPaused) {
+      // 继续:从当前进度恢复
+      setDemoRunning(true);
+      setDemoPaused(false);
+    } else {
+      // 重置:回到初始状态
+      setProgress(0);
+      setDemoComplete(false);
+    }
   };
 
   const selectWorkflow = (index: number) => {
     setActiveWorkflow(index);
-    };
+  };
 
   const showNextStory = () => {
     setStoryIndex((index) => (index + 1) % stories.length);
